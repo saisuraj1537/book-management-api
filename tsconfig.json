@@ -1,19 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ES6",                        // Compile to ES6 for better async/await support
-    "module": "commonjs",                   // Use CommonJS for Node.js compatibility
-    "strict": true,                         // Enable strict mode to ensure type safety
-    "esModuleInterop": true,                // Ensure compatibility between ES6 and CommonJS modules
-    "skipLibCheck": true,                   // Skip type checking for declaration files to speed up compilation
-    "forceConsistentCasingInFileNames": true,  // Ensure consistent casing for file names across the project
-    "outDir": "./dist",                     // Specify output directory for compiled JS files
-    "rootDir": "./src",                     // Specify root directory for source files
+    "target": "ES6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
     "typeRoots": [
-      "./node_modules/@types",
-      "./node_modules"
-    ],                                     // Ensure that @types is recognized
-    "types": ["node", "express", "multer", "uuid"] // Explicitly include necessary types
+      "./node_modules/@types" // Only look here for type definitions
+    ],
+    "types": ["node", "express", "multer", "uuid"]
   },
-  "include": ["src/**/*"],                  // Include all files under the src directory
-  "exclude": ["node_modules"]               // Exclude node_modules from the compilation
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
