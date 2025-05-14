@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node",
+    "module": "commonjs",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "types": ["jest"]
   }
 }
