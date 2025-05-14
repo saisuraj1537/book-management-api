@@ -1,0 +1,28 @@
+### Get list of all books
+GET http://localhost:5000/api/books
+
+### Get details of a specific book
+GET http://localhost:5000/api/books/d90fc2b4-2858-466a-9cfc-8f60f4c821c5
+
+### Add a new book
+POST http://localhost:5000/api/books
+Content-Type: application/json
+
+{
+  "title": "Book Title",
+  "author": "Book Author",
+  "year": 2023
+}
+
+### Update an existing book
+PUT http://localhost:5000/api/books/1891a1ed-5fe9-4155-8e90-e0dd5fde7781
+Content-Type: application/json
+
+{
+  "title": "Updated Book Title",
+  "author": "Updated Author",
+  "year": 2024
+}
+
+### Delete a book
+DELETE http://localhost:5000/api/books/90485524-7c7e-4ced-8064-e223b8b68820
