@@ -12,7 +12,7 @@
       "./node_modules/@types",
       "./node_modules"
     ],                                     // Ensure that @types is recognized
-    "types": ["node", "express", "multer", "uuid"] // Explicitly include necessary types
+    "types": ["node"] // Explicitly include necessary types
   },
   "include": ["src/**/*"],                  // Include all files under the src directory
   "exclude": ["node_modules"]               // Exclude node_modules from the compilation
