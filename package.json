@@ -4,11 +4,11 @@
   "description": "Book Management API with Node.js and TypeScript",
   "main": "dist/app.js",
   "scripts": {
-    "start": "node dist/server.js",
-  "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-  "build": "tsc"
+    "start": "ts-node src/app.ts"
   },
   "dependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.15.18",
     "csv-parser": "^3.2.0",
     "express": "^4.17.1",
     "multer": "^1.4.5-lts.2",
