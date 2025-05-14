@@ -9,9 +9,9 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "typeRoots": [
-      "./node_modules/@types" // Only look here for type definitions
-    ],
-    "types": ["node", "express", "multer", "uuid"]
+      "./node_modules/@types"
+    ]
+    // Removed the "types" array
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
