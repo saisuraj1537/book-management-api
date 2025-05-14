@@ -1,13 +1,13 @@
-import express from "express";
-import bookRoutes from "./routes/book.routes";
+import express from 'express';
+import bookRoutes from './routes/book.routes';
 
 const app = express();
-const PORT = 3000;
 
+// ✅ Required to parse JSON bodies
 app.use(express.json());
 
-app.use("/api/books", bookRoutes);
+app.use('/', bookRoutes);
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.listen(5000, () => {
+  console.log('Server running on port 5000');
 });

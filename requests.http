@@ -25,4 +25,4 @@ Content-Type: application/json
 }
 
 ### Delete a book
-DELETE http://localhost:5000/api/books/90485524-7c7e-4ced-8064-e223b8b68820
+DELETE http://localhost:5000/api/books/

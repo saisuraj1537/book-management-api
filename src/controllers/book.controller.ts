@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import csv from 'csv-parser';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Book {
   id: string;
@@ -10,91 +10,92 @@ interface Book {
   year: number;
 }
 
-let books: Book[] = [
-  { id: uuidv4(), title: 'Book One', author: 'Author A', year: 2022 },
-  { id: uuidv4(), title: 'Book Two', author: 'Author B', year: 2021 },
-];
+const books: Book[] = [];
 
-// GET all books
-export const getBooks = (req: Request, res: Response) => {
+// GET /books
+export const getBooks = (req: Request, res: Response): void => {
   res.json(books);
 };
 
-// GET a specific book by ID
-export const getBook = (req: Request, res: Response) => {
-  const { id } = req.params;
-  const book = books.find(b => b.id === id);
-
+// GET /books/:id
+export const getBook = (req: Request<{ id: string }>, res: Response): void => {
+  const book = books.find(b => b.id === req.params.id);
   if (!book) {
-    return res.status(404).send({ message: 'Book not found' });
+    res.status(404).json({ message: 'Book not found' });
+    return;
   }
-
   res.json(book);
 };
 
-// POST a new book
-export const addBook = (req: Request, res: Response) => {
+// POST /books
+export const addBook = (req: Request, res: Response): void => {
   const { title, author, year } = req.body;
-  const newBook = { id: uuidv4(), title, author, year: Number(year) };
+
+  const newBook: Book = {
+    id: uuidv4(),
+    title,
+    author,
+    year: Number(year),
+  };
 
   books.push(newBook);
-  res.status(201).json(newBook);
+  res.status(201).json({ message: 'Book added', book: newBook });
 };
 
-// PUT update a book by ID
-export const updateBook = (req: Request, res: Response) => {
-  const { id } = req.params;
-  const { title, author, year } = req.body;
-  const bookIndex = books.findIndex(b => b.id === id);
-
-  if (bookIndex === -1) {
-    return res.status(404).send({ message: 'Book not found' });
+// PUT /books/:id
+export const updateBook = (req: Request<{ id: string }>, res: Response): void => {
+  const index = books.findIndex(b => b.id === req.params.id);
+  if (index === -1) {
+    res.status(404).json({ message: 'Book not found' });
+    return;
   }
 
-  books[bookIndex] = { id, title, author, year: Number(year) };
-  res.json(books[bookIndex]);
+  const updatedBook = { ...books[index], ...req.body };
+  books[index] = updatedBook;
+  res.json({ message: 'Book updated', book: updatedBook });
 };
 
-// DELETE a book by ID
-export const deleteBook = (req: Request, res: Response) => {
-  const { id } = req.params;
-  const bookIndex = books.findIndex(b => b.id === id);
-
-  if (bookIndex === -1) {
-    return res.status(404).send({ message: 'Book not found' });
+// DELETE /books/:id
+export const deleteBook = (req: Request<{ id: string }>, res: Response): void => {
+  const index = books.findIndex(b => b.id === req.params.id);
+  if (index === -1) {
+    res.status(404).json({ message: 'Book not found' });
+    return;
   }
 
-  books.splice(bookIndex, 1);
-  res.status(204).send();
+  const deletedBook = books.splice(index, 1)[0];
+  res.json({ message: 'Book deleted', book: deletedBook });
 };
 
-// IMPORT books from CSV
-export const importBooksFromCSV = (req: Request, res: Response) => {
-  const results: Book[] = [];
-
+// POST /books/import
+export const importBooksFromCSV = (req: Request, res: Response): void => {
   if (!req.file) {
-    return res.status(400).json({ message: 'CSV file is required.' });
+    res.status(400).json({ message: 'No CSV file uploaded' });
+    return;
   }
 
-  fs.createReadStream(req.file.path)
+  const importedBooks: Book[] = [];
+  const filePath = req.file.path;
+
+  fs.createReadStream(filePath)
     .pipe(csv())
-    .on('data', (data) => {
-      if (data.title && data.author && data.year) {
-        const newBook: Book = {
-          id: uuidv4(),
-          title: data.title,
-          author: data.author,
-          year: parseInt(data.year, 10),
-        };
-        results.push(newBook);
-      }
+    .on('data', (row: any) => {
+      importedBooks.push({
+        id: uuidv4(),
+        title: row.title,
+        author: row.author,
+        year: Number(row.year),
+      });
     })
     .on('end', () => {
-      books.push(...results);
-      fs.unlinkSync(req.file.path); // Cleanup uploaded file
-      res.status(201).json({ message: 'Books imported successfully', count: results.length, books: results });
+      books.push(...importedBooks);
+      res.status(200).json({
+        message: 'Books imported successfully',
+        count: importedBooks.length,
+        books: importedBooks,
+      });
     })
     .on('error', (err) => {
-      res.status(500).json({ message: 'Failed to import books from CSV', error: err.message });
+      res.status(500).json({ message: 'Error processing CSV', error: err.message });
     });
 };
