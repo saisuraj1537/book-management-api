@@ -7,7 +7,12 @@
     "skipLibCheck": true,                   // Skip type checking for declaration files to speed up compilation
     "forceConsistentCasingInFileNames": true,  // Ensure consistent casing for file names across the project
     "outDir": "./dist",                     // Specify output directory for compiled JS files
-    "rootDir": "./src"                      // Specify root directory for source files
+    "rootDir": "./src",                     // Specify root directory for source files
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules"
+    ],                                     // Ensure that @types is recognized
+    "types": ["node", "express", "multer", "uuid"] // Specify type declarations for node, express, multer, and uuid
   },
   "include": ["src/**/*"],                  // Include all files under the src directory
   "exclude": ["node_modules"]               // Exclude node_modules from the compilation
